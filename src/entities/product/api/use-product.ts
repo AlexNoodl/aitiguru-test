@@ -1,18 +1,49 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import type { ProductListRepsonse } from '../model/types'
+import { useQuery } from '@tanstack/react-query'
+import type { ProductListResponse } from '../model/types'
 import { api } from '@/shared/api/base'
+import { useProductPagination } from '@/entities/product/model/store'
+import { useDebounce } from '@/shared/hooks/use-debounce'
 
-export const useProduct = (page: number, limit: number = 20) => {
+export const useProduct = () => {
+    const {
+        currentPage,
+        pageSize,
+        setProducts,
+        setTotal,
+        searchQuery,
+        sortBy,
+        order,
+    } = useProductPagination()
+    const skip = (currentPage - 1) * pageSize
+
+    const debounceQuery = useDebounce(searchQuery, 500)
+
     return useQuery({
-        queryKey: ['products', page],
+        queryKey: [
+            'products',
+            currentPage,
+            pageSize,
+            debounceQuery,
+            sortBy,
+            order,
+        ],
         queryFn: async () => {
-            const skip = (page - 1) * limit
-            const { data } = await api.get<ProductListRepsonse>(
-                `/products?limit=${limit}&skip=${skip}`
-            )
-            return data.products
+            let url = searchQuery
+                ? `/products/search?q=${searchQuery}`
+                : `/products?`
+            url += `&limit=${pageSize}&skip=${skip}`
+
+            if (sortBy && order) {
+                url += `&sortBy=${sortBy}&order=${order}`
+            }
+
+            const { data } = await api.get<ProductListResponse>(url)
+
+            setProducts(data.products)
+            setTotal(data.total)
+
+            return data
         },
-        placeholderData: keepPreviousData,
-        staleTime: 1000 * 60 * 3,
+        enabled: true,
     })
 }

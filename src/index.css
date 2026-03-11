@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #F6F6F6;
+}
+
+@theme {
+  --color-dark: #232323;
+  --color-brand-blue: #242EDB;
+  --background-image-gradient-soft: linear-gradient(180deg, rgba(35, 35, 35, 0.03) 0%, rgba(35, 35, 35, 0) 50%);
+  --color-border: #EDEDED;
+  --shadow-login-form: 0 24px 32px 0 rgba(0, 0, 0, 0.04);
+}
+
+
+
