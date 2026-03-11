@@ -1,11 +1,11 @@
 import { Form, Input } from 'antd'
 import type { Product } from '@/entities/product/model/types'
 
-type FieldType = Omit<Product, 'id'> & {}
+type FieldType = Omit<Product, 'id'>
 
 export const ProductsModal = () => {
     return (
-        <Form name="product">
+        <Form<FieldType> name="product">
             <Form.Item
                 label="Наименование"
                 name="title"
