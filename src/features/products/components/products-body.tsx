@@ -36,7 +36,8 @@ export const ProductsBody = () => {
         order,
         setSorting,
     } = useProductPagination()
-    const { isModalOpen, setIsModalOpen } = useProductModal()
+    const isModalOpen = useProductModal((s) => s.isModalOpen)
+    const setIsModalOpen = useProductModal((s) => s.setIsModalOpen)
     const [api, contextHolder] = notification.useNotification()
 
     const onSelectChange = (newSelectedRowKeys: Key[]) => {
